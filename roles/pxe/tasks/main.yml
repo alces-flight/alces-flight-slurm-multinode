@@ -1,0 +1,9 @@
+- name: Setup DHCP
+  import_tasks: dhcp.yml
+
+- name: Setup Xinetd
+  import_tasks: xinetd.yml
+
+- name: Setup NTP
+  import_tasks: ntp.yml
+

@@ -1,0 +1,6 @@
+- name: Configure PXE Boot Server
+  hosts: pxe
+  remote_user: root
+  gather_facts: True
+  roles:
+    - role: pxe
