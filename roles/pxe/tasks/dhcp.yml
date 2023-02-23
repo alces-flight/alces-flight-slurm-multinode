@@ -1,0 +1,20 @@
+- name: Install DHCP
+  yum:
+    name: dhcp
+    state: present
+
+- name: Install DHCP Config File
+  template:
+    src: dhcpd.conf
+    dest: /etc/dhcp/dhpcd.conf 
+
+- name: Create DHCP Hosts Files
+  debug:
+    msg: "TODO: Generate from hunter list? How would we enforce IPs for nodes?"
+
+- name: Run DHCP
+  service:
+    name: dhcpd
+    state: restarted
+    enabled: yes
+

@@ -1,0 +1,42 @@
+# Old method installed php too but I think that's for metalware build method stuff
+- name: Install TFTP & Xinetd Packages
+  yum:
+    name: 
+      - tftp
+      - xinetd
+      - tftp-server
+      - syslinux 
+      - syslinux-tftpboot
+    state: present
+
+- name: Prepare PXE path
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /var/lib/tftpboot/boot
+    - /var/lib/tftpboot/pxelinux.cfg/
+
+- name: Download Kernel & Ramdisk
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: '0755'
+  loop:
+    - { urL: "{{ dnf_remote_base_url }}/images/pxeboot/initrd.img", dest: "/var/lib/tftpboot/boot/initrd.img" }
+    - { urL: "{{ dnf_remote_base_url }}/images/pxeboot/vmlinuz", dest: "/var/lib/tftpboot/boot/vmlinuz" }
+
+
+- name: Enable TFTP
+  lineinfile:
+    path: /etc/xinetd.d/tftp
+    regexp: '^    disable = '
+    line: '    disable = no'
+
+- name: Run Xinetd
+  service:
+    name: xinetd
+    state: restarted
+    enabled: yes
+

@@ -1,0 +1,16 @@
+- name: Install NTP 
+  yum:
+    name: chrony
+    state: present
+
+- name: Install NTP config
+  template: 
+    src: chrony.conf
+    dest: /etc/chrony.conf
+
+- name: Run NTP
+  service:
+    name: chronyd
+    state: restarted
+    enabled: yes
+

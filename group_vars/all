@@ -1,0 +1,19 @@
+cluster_name: mycluster 
+cluster_domain_end: "alces.network"
+cluster_domain: "{{ cluster_name }}.{{ cluster_domain_end }}"
+
+dnf_remote_base_url: http://dl.rockylinux.org/pub/rocky/8/BaseOS/x86_64/os/
+
+# Networks
+networks: 
+  pri:
+    network: 10.10.0.0
+    netmask: 255.255.0.0
+    gateway: 10.11.0.1
+    domain: "pri.{{ cluster_domain }}"
+  mgt:
+    network: 10.11.0.0
+    netmask: 255.255.0.0
+    gateway: 10.11.0.1
+    domain: "pri.{{ cluster_domain }}"
+
