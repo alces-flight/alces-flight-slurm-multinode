@@ -20,19 +20,18 @@
 
 - name: Download Kernel & Ramdisk
   get_url:
-    url: "{{ item.url }}"
+    url: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: '0755'
   loop:
-    - { urL: "{{ dnf_remote_base_url }}/images/pxeboot/initrd.img", dest: "/var/lib/tftpboot/boot/initrd.img" }
-    - { urL: "{{ dnf_remote_base_url }}/images/pxeboot/vmlinuz", dest: "/var/lib/tftpboot/boot/vmlinuz" }
+    - { src: "{{ dnf_remote_base_url }}/images/pxeboot/initrd.img", dest: "/var/lib/tftpboot/boot/initrd.img" }
+    - { src: "{{ dnf_remote_base_url }}/images/pxeboot/vmlinuz", dest: "/var/lib/tftpboot/boot/vmlinuz" }
 
-
-- name: Enable TFTP
-  lineinfile:
-    path: /etc/xinetd.d/tftp
-    regexp: '^    disable = '
-    line: '    disable = no'
+- name: Run TFTP
+  service:
+    name: tftp
+    state: restarted
+    enabled: yes
 
 - name: Run Xinetd
   service:
